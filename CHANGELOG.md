@@ -180,11 +180,15 @@ on arrival. Reserved weight per container is tracked while planning.
 
 ### Base life — *additions in `LOS_LivingExtras`*
 
-- **Furniture was "free floor".** `isFree(false)` is true for counters, shelves
-  and beds (solidtrans without solid), so companions were sent to stand on them,
-  hopped over rows of furniture, and jammed. Stand squares now use the same test
-  `HopOverIt` uses for obstacles, and the nearest standable square is searched in
-  rings instead of `walkableSquare()` picking at random.
+- **Companions hopping over every piece of furniture (with *Hop It!*).**
+  `isFree(false)` is true for counters, shelves and beds (solidtrans without
+  solid), so LOS kept choosing them as stand squares. *Hop It!* treats those
+  squares as obstacles, so the NPC hopped over — or onto — every piece of
+  furniture between it and the spot, then arrived somewhere it could not work
+  from and jammed. Stand squares now use the same standability test *Hop It!*
+  uses for its obstacles, so furniture is never picked as somewhere to stand,
+  and the nearest standable square is searched in rings instead of
+  `walkableSquare()` picking at random.
 - **Hold squares recorded on furniture.** `LOS.Orders.give()` stored the current
   square as the place to return to; from a chair or counter every "wait" return
   ordered a walk the pathfinder refuses, and the companion collected orders

@@ -27,10 +27,12 @@ local LOS = LastOnesStanding
 -- Squares a body can really stand on
 ---------------------------------------------------------------------------
 -- isFree(false) is true for some low furniture (solidtrans without solid),
--- so companions were sent to stand on counters, shelves and beds.  They
--- reached the square, could not work from it and jammed there.  HopOverIt
--- uses the same test for its obstacles: solidtrans is only walkable when
--- the game says the square is standable (a counter under a window, say).
+-- so companions were sent to stand on counters, shelves and beds.  With the
+-- "Hop It!" mod installed, which treats those squares as obstacles, that made
+-- them hop over (or onto) every piece of furniture on the way; they then
+-- reached a square they could not work from and jammed.  Hop It! uses the same
+-- test for its obstacles: solidtrans is only walkable when the game says the
+-- square is standable (a counter under a window, say).
 function LOS.canStandSquare(sq)
     if not sq then return false end
     local ok, free = pcall(function() return sq:isFree(false) end)
