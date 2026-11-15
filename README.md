@@ -13,6 +13,18 @@ This is not a fork. It requires Last Ones Standing and loads after it.
 - **Game:** Project Zomboid 42.22.2 (`3d39148846`), `versionMin = 42.21`
 - **Every change, with the shipped code it replaces:** [CHANGELOG.md](CHANGELOG.md)
 
+## Disclaimer
+
+This is AI slop. Yes, even this disclaimer. The AI was pointed at bugs and
+incomplete behaviours and only moderately kept in check by a human, so read the
+diff before you trust it. Use at your own risk — you were warned.
+
+It is also not an exhaustive list of fixes. Last Ones Standing is early and
+still being worked on, and this started as a local patch for one playthrough
+and one person's tastes. It is public because it might help someone else, and
+because the author might see an idea or a bug fix worth implementing properly
+in the mod itself.
+
 ## Install
 
 1. Subscribe to (or install) **Last Ones Standing**.
