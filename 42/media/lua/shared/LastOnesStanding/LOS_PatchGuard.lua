@@ -59,7 +59,14 @@ function G.active()
     if not los then return disable("Last Ones Standing is not loaded") end
     local v = los.VERSION
     if not v then return disable("Last Ones Standing reports no VERSION") end
-    if v == G.TESTED_VERSION then return true end
+    if v == G.TESTED_VERSION then
+        if not G.once then
+            G.once = true
+            report("SLOPPY PATCH ENABLED: Last Ones Standing " .. v ..
+                " matches TESTED_VERSION.")
+        end
+        return true
+    end
 
     if forced() then
         if not G.forcedNoted then

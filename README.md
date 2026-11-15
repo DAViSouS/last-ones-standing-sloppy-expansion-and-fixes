@@ -31,7 +31,7 @@ load it compares `LastOnesStanding.VERSION` with the version it was written for
 
 | Situation | What happens |
 |---|---|
-| Versions match | The patch runs normally. |
+| Versions match | The patch runs normally, with one `SLOPPY PATCH ENABLED` line in `console.txt`. |
 | Versions differ | Every file of the patch returns immediately. `console.txt` gets one line: `SLOPPY PATCH DISABLED: Last Ones Standing is X but the patch was written for Y...` The game runs Last Ones Standing exactly as shipped. |
 | LOS missing | Same, with `Last Ones Standing is not loaded`. |
 
@@ -114,9 +114,9 @@ wraps exported functions.
    `LOS_CombatPatch.lua` against the changed functions.
 4. Set `TESTED_VERSION` in `LOS_PatchGuard.lua` to the new
    `LastOnesStanding.VERSION`, bump `modversion` and add a CHANGELOG entry.
-5. In game, check `console.txt` for `PATCH combat loaded` and
-   `PATCH living installed`, and make sure there is no `SLOPPY PATCH DISABLED`
-   line.
+5. In game, check `console.txt` for `SLOPPY PATCH ENABLED`, `PATCH combat
+   loaded` and `PATCH living storage/scavenging fixes loaded`, and make sure
+   there is no `SLOPPY PATCH DISABLED` line.
 
 Until step 4 is done the patch disables itself, so a rebase can be finished
 without anyone losing a save.
