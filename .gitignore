@@ -1,0 +1,8 @@
+# Local-only helpers and reports: kept out of the published mod.
+BUGREPORT_*.md
+check-upstream.bat
+tools/
+
+# Logs and archives
+*.zip
+*.log

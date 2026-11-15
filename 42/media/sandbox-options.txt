@@ -1,0 +1,117 @@
+VERSION = 1,
+
+option SloppyExpansion.standingOnly
+{
+    type = boolean,
+    default = true,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_standingOnly,
+}
+
+option SloppyExpansion.wakeOnHit
+{
+    type = boolean,
+    default = true,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_wakeOnHit,
+}
+
+option SloppyExpansion.tiredDamage
+{
+    type = boolean,
+    default = true,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_tiredDamage,
+}
+
+option SloppyExpansion.tiredFrom
+{
+    type = integer,
+    min = 0,
+    max = 95,
+    default = 60,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_tiredFrom,
+}
+
+option SloppyExpansion.tiredDamageStart
+{
+    type = integer,
+    min = 0,
+    max = 95,
+    default = 50,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_tiredDamageStart,
+}
+
+option SloppyExpansion.tiredDamageMost
+{
+    type = integer,
+    min = 0,
+    max = 95,
+    default = 85,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_tiredDamageMost,
+}
+
+option SloppyExpansion.tiredMiss
+{
+    type = boolean,
+    default = false,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_tiredMiss,
+}
+
+option SloppyExpansion.tiredMissMost
+{
+    type = integer,
+    min = 0,
+    max = 90,
+    default = 50,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_tiredMissMost,
+}
+
+option SloppyExpansion.hardenBlow
+{
+    type = boolean,
+    default = true,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_hardenBlow,
+}
+
+option SloppyExpansion.hardenBlowPercent
+{
+    type = integer,
+    min = 100,
+    max = 500,
+    default = 300,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_hardenBlowPercent,
+}
+
+option SloppyExpansion.staggerDown
+{
+    type = boolean,
+    default = true,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_staggerDown,
+}
+
+option SloppyExpansion.staggerDownChance
+{
+    type = integer,
+    min = 0,
+    max = 100,
+    default = 30,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_staggerDownChance,
+}
+
+option SloppyExpansion.forceOn
+{
+    type = boolean,
+    default = false,
+    page = SloppyExpansion,
+    translation = SloppyExpansion_forceOn,
+}
