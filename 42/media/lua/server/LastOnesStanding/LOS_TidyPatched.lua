@@ -101,6 +101,7 @@ local FOOD = { dryfood = true, freshfood = true, usefirst = true }
 -- PATCH: broken glass is an IsoBrokenGlass object on the floor, not an
 -- inventory item, so the normal floor tidy scan never saw it.  Sweep the base
 -- for it when there is nothing else to tidy and use the game's pickup action.
+-- UNTESTED: not confirmed working in game yet.
 local GLASS_SCAN_MS = 30000
 local GLASS_CLAIM_MS = 120000
 local GLASS_SKIP_MS = 600000
@@ -867,6 +868,7 @@ end
 -- ISPickupBrokenGlass, turns it into Base.BrokenGlass in the inventory; mark
 -- that for the normal tidy put-away on the next tick.  A smashed window that
 -- still holds its shards is cleared with ISRemoveBrokenGlass instead.
+-- UNTESTED: not confirmed working in game yet.
 local GLASS_MARGIN = 4
 local function glassInBase()
     local now = getTimestampMs()

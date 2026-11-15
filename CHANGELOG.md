@@ -104,7 +104,7 @@ thousands of lines). The patch measures distance to the object, takes one step
 to the nearest standable square beside it, and only once per job; a watchdog
 catches the rest.
 
-**Broken glass was invisible to tidy.** `IsoBrokenGlass` is a world object, not
+**Broken glass was invisible to tidy** *(untested)*. `IsoBrokenGlass` is a world object, not
 an inventory item, so the floor scan never saw it. The base is swept for glass
 when there is nothing else to do, using the game's pickup actions; the resulting
 `Base.BrokenGlass` inventory item goes through normal put-away, and stray pieces
@@ -193,6 +193,17 @@ on arrival. Reserved weight per container is tracked while planning.
   square as the place to return to; from a chair or counter every "wait" return
   ordered a walk the pathfinder refuses, and the companion collected orders
   forever. The recorded hold square is repaired before shipped code uses it.
+- **Pacing in circles over furniture, unable to wait where it was told**
+  *(untested)*. A wait or guard order remembers the square the companion stood
+  on, and `backTo()`
+  sends it back there every few seconds. If that square becomes unreachable
+  while the companion is still close to it — *Hop It!* hopped it out of the
+  room, a door shut behind it, furniture was pushed across — every one of those
+  orders is a path request the game refuses. The companion paces, hops
+  furniture and never settles, and the stuck watchdog eventually sets it aside
+  for a minute. Once a return walk has failed for good, the recorded spot moves
+  to the square it is standing on, so it waits there instead. Wait posts on a
+  wall line are left alone, because they are where walls get built.
 - **Couches as beds.** Some couches have no sprite grid, so only one tile was
   recorded; the get-in animation lies the character on a neighbouring tile of the
   same couch, the shipped check called that "off its bed" and the companion got

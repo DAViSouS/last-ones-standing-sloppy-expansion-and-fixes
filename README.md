@@ -3,7 +3,8 @@
 A companion patch for **[Last Ones Standing](https://steamcommunity.com/sharedfiles/filedetails/?id=3830310103)**
 (the 1993 survivors sandbox). It fixes the bugs I ran into while playing –
 companions swinging from the floor, a 3× extra blow on the player, NPCs not
-waking when hit, storage and tidy jobs that give up – without editing the
+waking when hit, companions pacing in circles over furniture, storage and tidy
+jobs that give up – without editing the
 shipped mod, and it turns itself off when Last Ones Standing changes version so
 a stale patch can never break a save.
 

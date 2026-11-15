@@ -167,6 +167,49 @@ end
 LOS.fixOrderHold = fixOrderHold
 
 ---------------------------------------------------------------------------
+-- Waiting somewhere it cannot reach: wait where it stands
+---------------------------------------------------------------------------
+-- A wait or guard order stores the square the companion stood on when it was
+-- told, and LOS.Orders.backTo() sends it back there every few seconds.  If
+-- that square becomes unreachable while the companion is still close to it --
+-- *Hop It!* hopped it out of the room, a door shut behind it, furniture was
+-- pushed across -- every one of those orders is a path request the game
+-- refuses.  The companion paces in circles, hopping furniture, and never
+-- settles.  Once a wait walk has failed for good, move the recorded spot to
+-- the square it is standing on instead.
+-- UNTESTED: waiting for an in-game confirmation.
+local WAIT_TAGS = { wait = true, guard = true }
+local WAIT_NEAR = 8
+
+local function waitWhereItStands(npc, tag, gx, gy)
+    if not WAIT_TAGS[tag] or not npc or npc:getVehicle() then return end
+    local id = LOS.idOf(npc)
+    if not id then return end
+    local rec = LOS.Records and LOS.Records.get and LOS.Records.get(id)
+    local o = rec and rec.order
+    if not (o and o.x and o.y) then return end
+    -- Only when the walk was going to the recorded post itself.  "wait" is
+    -- the tag LOS.Orders.backTo() puts on that walk, whichever work order the
+    -- companion holds (tidy, clean, water...), so do not test o.kind here.
+    if gx and (math.abs(gx - (o.x + 0.5)) > 1.5 or math.abs(gy - (o.y + 0.5)) > 1.5) then return end
+    -- Wait posts on a wall line are where walls get built; moving one would
+    -- take the companion off the line.
+    if o.kind == "wait" and LOS.Walls and LOS.Walls.nearLine then
+        local ok, near = pcall(LOS.Walls.nearLine, o.x, o.y)
+        if ok and near then return end
+    end
+    local z = o.z or 0
+    if math.floor(npc:getZ()) ~= z then return end
+    local d = IsoUtils.DistanceTo(npc:getX(), npc:getY(), o.x + 0.5, o.y + 0.5)
+    if d > WAIT_NEAR then return end
+    local sq = LOS.standSquareNear(math.floor(npc:getX()), math.floor(npc:getY()), z, 2)
+    if not sq or (sq:getX() == o.x and sq:getY() == o.y) then return end
+    LOS.log("ORDER npc=%d cannot reach its %s spot at %d,%d (%.1f tiles); it waits where it stands at %d,%d",
+        id, o.kind, o.x, o.y, d, sq:getX(), sq:getY())
+    o.x, o.y, o.z = sq:getX(), sq:getY(), sq:getZ()
+end
+
+---------------------------------------------------------------------------
 -- Couches as beds: the game lies the character on another tile of the couch
 ---------------------------------------------------------------------------
 -- Some couches (the Orange and Yellow ones, for instance) have no sprite
@@ -1074,7 +1117,12 @@ local function patchedClimbOver(self, now)
     return openDoorBeside(self)
 end
 
-local upstreamOrderStep, upstreamOrderGive
+local upstreamOrderStep, upstreamOrderGive, upstreamOnWalkFailed
+
+local function onWalkFailedWrapper(npc, tag, now, gx, gy, gz, remembered)
+    if upstreamOnWalkFailed then upstreamOnWalkFailed(npc, tag, now, gx, gy, gz, remembered) end
+    waitWhereItStands(npc, tag, gx, gy)
+end
 
 local function patchedOrderStep(id, npc, br, rec, role, cur, now, ctx, player)
     fixOrderHold(rec, br, npc)
@@ -1247,9 +1295,14 @@ local function install()
         Ord.give = patchedOrderGive
     end
 
+    if LOS.onWalkFailed and LOS.onWalkFailed ~= onWalkFailedWrapper then
+        if not upstreamOnWalkFailed then upstreamOnWalkFailed = LOS.onWalkFailed end
+        LOS.onWalkFailed = onWalkFailedWrapper
+    end
+
     if not saidBaseChores then
         saidBaseChores = true
-        LOS.log("PATCH base chores loaded: body spots, cleaning sources and gear, boarding materials from any marked box and sides, salvage range, stand squares, storage marks and sorting, base doors, tool storage, personal-item keeping, over-weight unloading, hold squares, broken glass, window sides, couch beds and bed sides, breaks that become sleep")
+        LOS.log("PATCH base chores loaded: body spots, cleaning sources and gear, boarding materials from any marked box and sides, salvage range, stand squares, storage marks and sorting, base doors, tool storage, personal-item keeping, over-weight unloading, hold squares, broken glass, window sides, couch beds and bed sides, breaks that become sleep, wait spots it cannot reach")
     end
 end
 
