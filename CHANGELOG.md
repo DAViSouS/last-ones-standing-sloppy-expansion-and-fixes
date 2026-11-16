@@ -14,7 +14,10 @@ author and for anyone reviewing the patch before installing it.
 
 ---
 
-## 1.0.0 — 15 November 2026
+## 1.0.1 — 16 November 2026
+
+First Workshop build as 1.0.0 on 15 November; this rebuild adds the gun and
+getting-up gate, the circling fix and the Hop It! note.
 
 ### Combat
 
@@ -249,7 +252,7 @@ on arrival. Reserved weight per container is tracked while planning.
 ### Metadata and safety
 
 - Name: **Last Ones Standing Sloppy Expansion and Fixes**; mod id
-  `LastOnesStandingSloppyExpansion`; `modversion` 1.0.0.
+  `LastOnesStandingSloppyExpansion`; `modversion` 1.0.1.
 - Sandbox page **Sloppy Expansion and Fixes** (`SloppyExpansion`), 13 options,
   English labels and tooltips in `42/media/lua/shared/Translate/EN/Sandbox.json`.
 - **Version guard** (`LOS_PatchGuard.lua`): the patch was written for

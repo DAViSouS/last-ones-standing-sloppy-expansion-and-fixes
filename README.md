@@ -10,6 +10,8 @@ a stale patch can never break a save.
 
 This is not a fork. It requires Last Ones Standing and loads after it.
 
+**Steam Workshop:** [Last Ones Standing Sloppy Expansion and Fixes](https://steamcommunity.com/sharedfiles/filedetails/?id=3840529542)
+
 - **Base:** Last Ones Standing `0.2.292-dev`
 - **Game:** Project Zomboid 42.22.2 (`3d39148846`), `versionMin = 42.21`
 - **Every change, with the shipped code it replaces:** [CHANGELOG.md](CHANGELOG.md)
@@ -28,9 +30,9 @@ in the mod itself.
 
 ## Install
 
-1. Subscribe to (or install) **Last Ones Standing**.
-2. Copy this folder to `%USERPROFILE%\Zomboid\mods\` so that
-   `...\Zomboid\mods\<this folder>\42\mod.info` exists.
+1. Subscribe to **Last Ones Standing** and to **[this patch](https://steamcommunity.com/sharedfiles/filedetails/?id=3840529542)**.
+2. For a manual install instead, copy this folder to `%USERPROFILE%\Zomboid\mods\` so that
+   `...\Zomboid\mods\<this folder>\mod.info` exists.
 3. Enable both mods. Load order is enforced by `require=LastOnesStanding1993`.
 
 The mod id is `LastOnesStandingSloppyExpansion`, so an existing save picks it up
@@ -97,7 +99,7 @@ the steps move to 0.40 / 0.55 / 0.70 / 0.85 with the same end values.
 ## Repository layout
 
 ```
-42/mod.info
+mod.info                                          name, id, requirements
 42/media/sandbox-options.txt                      sandbox page and options
 42/media/lua/shared/LastOnesStanding/
     LOS_PatchGuard.lua                            version guard
