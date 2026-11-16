@@ -1,6 +1,7 @@
 -- Last Ones Standing Sloppy Expansion and Fixes
 -- Combat fixes for Last Ones Standing:
---   * no melee swing from a seat, bed, the floor or while knocked down
+--   * no attack, melee or gun, from a seat, a bed, the floor, while knocked
+--     down or while getting up
 --   * a tired NPC hits softer (and, optionally, misses more) against people;
 --     fights with the dead keep the shipped numbers
 --   * a hit wakes a sleeping NPC
@@ -54,7 +55,7 @@ local function pct(name, default) return num(name, default) / 100 end
 ---------------------------------------------------------------------------
 -- Shared state
 ---------------------------------------------------------------------------
-local UPSTREAM_BEGIN, UPSTREAM_RESOLVE = nil, nil
+local UPSTREAM_BEGIN, UPSTREAM_RESOLVE, UPSTREAM_HIT = nil, nil, nil
 local hooked = false
 local realPostureOf = nil
 local pretendUp = nil
@@ -66,10 +67,15 @@ local function fatigueOf(npc)
 end
 
 
--- True when the NPC is in no state to swing: sitting, lying, in bed or down.
--- Standing in a seat is left alone (shooting from a car goes another path).
+-- True when the NPC is in no state to attack: sitting, lying, in bed, down,
+-- or still playing the get-up animation.  Getting up matters for guns: the
+-- engine clears isOnFloor()/isKnockedDown() before the get-up anim finishes,
+-- so a shot started in that window plays no shooting animation and only the
+-- fallback timer lands it.  Standing in a seat is left alone (shooting from a
+-- car goes another path).
 local function blocksSwing(npc)
     if npc:getVehicle() ~= nil then return false end
+    if npc.isGettingUp and npc:isGettingUp() then return true end
     if LOS.isDown and LOS.isDown(npc) then return true end
     local p = (LOS.postureOf and LOS.postureOf(npc)) or "up"
     return p ~= "up" and p ~= "seat"
@@ -129,19 +135,21 @@ end
 
 
 ---------------------------------------------------------------------------
--- No swing from the ground
+-- No attack from the ground (melee or gun)
 ---------------------------------------------------------------------------
 -- beginAttack() only looked at the *target's* posture, so a seated or lying
--- NPC landed a normal standing swing.  Refusing the start leaves the brain's
--- own stand-up path to get it on its feet; the swing happens after that.
--- If the NPC is still in no state to swing after a second, the action is
+-- NPC landed a normal standing swing or shot.  Refusing the start leaves the
+-- brain's own stand-up path to get it on its feet; the attack happens after
+-- that.  Guns are included: a shot started while sitting or getting up plays
+-- no shooting animation, and only the hit fallback timer lands it.
+-- If the NPC is still in no state to attack after a second, the action is
 -- finished so the brain can take over (never a locked aim pose).  One second
 -- is the length of a stand-up; less than that would thrash the action queue.
 local DOWN_WAIT_MS = 1000
 
 local function beginAttackPatched(self, now)
     local npc = self.character
-    if flag("standingOnly", true) and npc and not self.ranged and blocksSwing(npc) then
+    if flag("standingOnly", true) and npc and blocksSwing(npc) then
         self.nextAttack = now + 300
         local since = self.patchDownSince or now
         self.patchDownSince = since
@@ -153,6 +161,24 @@ local function beginAttackPatched(self, now)
     end
     self.patchDownSince = nil
     return UPSTREAM_BEGIN and UPSTREAM_BEGIN(self, now)
+end
+
+
+---------------------------------------------------------------------------
+-- A shot cannot land from the ground either
+---------------------------------------------------------------------------
+-- The start gate covers attacks that begin while the NPC is down.  This
+-- catches the other order: the attack began on its feet and the NPC was put
+-- down during the wind-up, so the fallback timer would land a shot with no
+-- shooting animation.  resolveHit never runs, so the round is not spent.
+local function hitPatched(self, source)
+    if self.ranged and flag("standingOnly", true) and self.character and blocksSwing(self.character) then
+        self.hitDone = true
+        LOS.log("PATCH npc=%s shot dropped (%s): it was not on its feet",
+            tostring(LOS.idOf(self.character)), tostring(source))
+        return
+    end
+    return UPSTREAM_HIT and UPSTREAM_HIT(self, source)
 end
 
 
@@ -379,6 +405,11 @@ local function install()
         LOSEngage.beginAttack = beginAttackPatched
     end
 
+    if LOSEngage.hit ~= hitPatched then
+        if not UPSTREAM_HIT then UPSTREAM_HIT = LOSEngage.hit end
+        LOSEngage.hit = hitPatched
+    end
+
     if LOS.resolveHit ~= resolveHitPatched then
         if not UPSTREAM_RESOLVE then UPSTREAM_RESOLVE = LOS.resolveHit end
         LOS.resolveHit = resolveHitPatched
@@ -405,4 +436,4 @@ install()
 Events.OnGameBoot.Add(install)
 Events.OnGameStart.Add(install)
 
-LOS.log("PATCH combat loaded: no swings from a bed, chair or the ground, fatigue weakens blows on people, hits wake sleepers, hits can keep an NPC down")
+LOS.log("PATCH combat loaded: no attacks from a bed, chair, the ground or while getting up, fatigue weakens blows on people, hits wake sleepers, hits can keep an NPC down")

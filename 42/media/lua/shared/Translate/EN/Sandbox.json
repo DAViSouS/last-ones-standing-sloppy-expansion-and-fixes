@@ -1,7 +1,7 @@
 {
     "Sandbox_SloppyExpansion": "Sloppy Expansion and Fixes",
-    "Sandbox_SloppyExpansion_standingOnly": "No swings from a seat or the ground",
-    "Sandbox_SloppyExpansion_standingOnly_tooltip": "An NPC will not start a melee swing while sitting, lying, in bed, prone or knocked down. It stands up first.",
+    "Sandbox_SloppyExpansion_standingOnly": "No attacks from a seat or the ground",
+    "Sandbox_SloppyExpansion_standingOnly_tooltip": "An NPC will not start a melee swing or a shot while sitting, lying, in bed, prone, knocked down or getting up. It stands up first.",
     "Sandbox_SloppyExpansion_wakeOnHit": "Hits wake sleepers",
     "Sandbox_SloppyExpansion_wakeOnHit_tooltip": "A hit wakes a sleeping NPC at once, instead of it sleeping through the beating.",
     "Sandbox_SloppyExpansion_tiredDamage": "Fatigue weakens blows",

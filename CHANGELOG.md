@@ -18,15 +18,29 @@ author and for anyone reviewing the patch before installing it.
 
 ### Combat
 
-**Swings from the floor, a bed, a chair or while knocked down.**
+**Attacks from the floor, a bed, a chair or while knocked down.**
 `LOS_Engage:isValid()`/`beginAttack()` only checked the *target's* posture, so
 an NPC lying on the floor, asleep in bed or sitting on a chair landed a normal
-standing swing. That is how a sleeping NPC killed a player in one bat hit.
-The patch refuses to start a melee swing unless the attacker is genuinely on
-its feet, and leaves the brain's own stand-up path to get it there. If it is
-still unable to swing after one second, the attack action is finished so the
-brain regains its action slot (previously the aim pose held the slot and the
-NPC took seconds to stand up). *Sandbox: `standingOnly`.*
+standing swing or shot. That is how a sleeping NPC killed a player in one bat
+hit.
+The patch refuses to start a melee swing or a shot unless the attacker is
+genuinely on its feet, and leaves the brain's own stand-up path to get it
+there. If it is still unable to attack after one second, the attack action is
+finished so the brain regains its action slot (previously the aim pose held the
+slot and the NPC took seconds to stand up). *Sandbox: `standingOnly`.*
+
+**Shots from the ground, and shots with no animation** *(untested)*. Guns went
+through the same `beginAttack()` without that posture check, so a survivor that
+the player had just knocked sitting on the ground drew a rifle and shot the
+player dead while its get-up animation was playing; the follow-up shot landed
+after it stood with no shooting animation either. The engine clears
+`isOnFloor()`/`isKnockedDown()` before the get-up animation ends, so
+`postureOf()` already said "up" while `Bob_GetUp_*` was still playing — a shot
+started in that window played no animation, and only the hit fallback timer
+landed it. The gate now also refuses a shot while the NPC is sitting, lying,
+knocked down or `isGettingUp()`, and `LOSEngage:hit` drops a shot whose shooter
+was put down during the wind-up instead of resolving it from the floor (the
+round is not spent, because `resolveHit` never runs).
 
 **Melee damage ignored fatigue.**
 `LOS_Combat`'s melee path rolls `dmg` from the weapon and hands it straight to

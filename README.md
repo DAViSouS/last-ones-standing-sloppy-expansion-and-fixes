@@ -2,9 +2,9 @@
 
 A companion patch for **[Last Ones Standing](https://steamcommunity.com/sharedfiles/filedetails/?id=3830310103)**
 (the 1993 survivors sandbox). It fixes the bugs I ran into while playing –
-companions swinging from the floor, a 3× extra blow on the player, NPCs not
-waking when hit, companions pacing in circles over furniture, storage and tidy
-jobs that give up – without editing the
+companions swinging or shooting from the floor, a 3× extra blow on the player,
+NPCs not waking when hit, companions pacing in circles over furniture, storage
+and tidy jobs that give up – without editing the
 shipped mod, and it turns itself off when Last Ones Standing changes version so
 a stale patch can never break a save.
 
@@ -65,7 +65,7 @@ All tuning lives on its own page, **Sloppy Expansion and Fixes**
 
 | Option | Meaning |
 |---|---|
-| No swings from a seat or the ground [on] | Refuse to start a melee swing unless the NPC is on its feet. |
+| No attacks from a seat or the ground [on] | Refuse to start a melee swing or a shot unless the NPC is on its feet (including while getting up). |
 | Hits wake sleepers [on] | A hit wakes a sleeping NPC at once. |
 | Fatigue weakens blows [on] | Melee damage against people drops with the attacker's fatigue. Zombie fights untouched. |
 | Fatigue where blows start to weaken (%) [60] | First tiredness moodle. Blows are untouched below it. |
