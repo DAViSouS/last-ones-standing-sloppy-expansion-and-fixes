@@ -14,6 +14,19 @@ author and for anyone reviewing the patch before installing it.
 
 ---
 
+## 1.0.2 — 17 November 2026
+
+Packaging fix. **The mod stopped appearing in the Mods screen**, so a fresh
+install could not be enabled.
+
+### Fixed
+
+- **`mod.info` moved back to `42/mod.info`.** Project Zomboid 42 reads
+  `mod.info` from the build folder, and the 1.0.1 layout had it in the mod's
+  root, which build 42 ignores. The Workshop build needs re-uploading with this
+  folder structure; existing installs that already have the mod enabled are
+  unaffected apart from the version number.
+
 ## 1.0.1 — 16 November 2026
 
 First Workshop build as 1.0.0 on 15 November; this rebuild adds the gun and

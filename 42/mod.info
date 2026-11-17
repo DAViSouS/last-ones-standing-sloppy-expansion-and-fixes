@@ -2,6 +2,6 @@ name=Last Ones Standing Sloppy Expansion and Fixes
 id=LastOnesStandingSloppyExpansion
 description=A companion patch for Last Ones Standing: floor and seat combat fixes, fatigue-scaled blows, safer storage and scavenging, and other repairs. It turns itself off automatically when Last Ones Standing changes version, so saves stay safe until the patch is rebased. Every fix has its own sandbox page.
 author=Dasfer
-modversion=1.0.1
+modversion=1.0.2
 require=LastOnesStanding1993
 versionMin=42.21

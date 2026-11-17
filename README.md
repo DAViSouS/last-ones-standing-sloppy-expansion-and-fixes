@@ -32,7 +32,8 @@ in the mod itself.
 
 1. Subscribe to **Last Ones Standing** and to **[this patch](https://steamcommunity.com/sharedfiles/filedetails/?id=3840529542)**.
 2. For a manual install instead, copy this folder to `%USERPROFILE%\Zomboid\mods\` so that
-   `...\Zomboid\mods\<this folder>\mod.info` exists.
+   `...\Zomboid\mods\modpatch\42\mod.info` exists. Project Zomboid 42 reads
+   `mod.info` from the build folder (`42/`), not from the mod's root.
 3. Enable both mods. Load order is enforced by `require=LastOnesStanding1993`.
 
 The mod id is `LastOnesStandingSloppyExpansion`, so an existing save picks it up
@@ -99,7 +100,7 @@ the steps move to 0.40 / 0.55 / 0.70 / 0.85 with the same end values.
 ## Repository layout
 
 ```
-mod.info                                          name, id, requirements
+42/mod.info                                       name, id, requirements
 42/media/sandbox-options.txt                      sandbox page and options
 42/media/lua/shared/LastOnesStanding/
     LOS_PatchGuard.lua                            version guard
